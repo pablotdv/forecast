@@ -11,19 +11,19 @@ This is a simple weather forecast app that uses the `US National Weather Service
 ## Installation
 
 1. Clone the repo
-   ```sh
-   git clone
-    ```
+```sh
+git clone git@github.com:pablotdv/forecast.git
+```
 2. build the images
-    ```sh
-    docker-compose build --no-cache
-    ```
+```sh
+docker-compose build --no-cache
+```
 
 ## Usage
 1. Run the containers
-    ```sh
-    docker-compose up -d
-    ```
+```sh
+docker-compose up -d
+```
 2. Open your browser and go to `http://localhost:3000/`
 3. Enter a valid Street, City, State, US zip code and click on the `SEARCH` button
 4. The weather forecast for the next 7 days will be displayed
