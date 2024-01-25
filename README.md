@@ -12,7 +12,7 @@ This is a simple weather forecast app that uses the `US National Weather Service
 
 1. Clone the repo
 ```sh
-git clone git@github.com:pablotdv/forecast.git
+git clone https://github.com/pablotdv/forecast.git
 ```
 2. build the images
 ```sh
