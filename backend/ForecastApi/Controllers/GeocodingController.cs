@@ -16,7 +16,7 @@ public class GeocodingController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<GeocodingResponse> GetGeocodingAsync(GeocodingRequest request)
+    public async Task<RootObject> GetGeocodingAsync(GeocodingRequest request)
     {
         return await _geocodingServices.GetGeocodingAsync(request);
     }

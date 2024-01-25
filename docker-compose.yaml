@@ -1,0 +1,19 @@
+version:  "3.7"
+
+services:
+  forecastapi: 
+    build: 
+      context: .\backend
+      dockerfile: ForecastApi\Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+
+  weatherforecast:
+    build: 
+      context: .\frontend\weather-forecast
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - forecastapi

@@ -1,3 +1,4 @@
+using ForecastApi.Application;
 using ForecastApi.ExternalServices;
 using ForecastApi.ExternalServices.Geocodings;
 using ForecastApi.ExternalServices.Weathers;
@@ -10,6 +11,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(WeatherForecastCommandHandler).Assembly));
+
 
 builder.Services.AddHttpClient("WeatherService", client =>
 {
@@ -29,6 +32,14 @@ builder.Services.Configure<GeocodingConfiguration>(
     builder.Configuration.GetSection("Geocoding:Configuration")
 );
 
+builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowAnyOrigin", builder =>
+            builder.AllowAnyOrigin()
+                   .AllowAnyHeader()
+                   .AllowAnyMethod());
+    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -37,6 +48,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowAnyOrigin");
 
 app.UseHttpsRedirection();
 

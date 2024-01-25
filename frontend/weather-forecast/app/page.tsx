@@ -1,102 +1,114 @@
-import Image from "next/image";
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import styles from "./page.module.css";
+'use client'
+import React from 'react';
+import { Card, CardContent, Typography, TextField, Button, Grid, LinearProgress, Skeleton } from '@mui/material';
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+
+
+// types.ts
+export type Forecast = {
+  number: number;
+  name: string;
+  startTime: string;
+  endTime: string;
+  isDaytime: boolean;
+  temperature: number;
+  temperatureUnit: string;
+  temperatureTrend: null | string;
+  detailedForecast: string;
+  icon: string;
+};
+
+export type WeatherForecastData = {
+  forecast: Forecast[];
+};
+
+const baseUrl =
+  (process.env.NEXT_PUBLIC_BACKEND_API_URL ?? "https://localhost:7164");
 
 export default function Home() {
+  const [forecasts, setForecasts] = React.useState<Forecast[]>([]);
+  const [street, setStreet] = React.useState('');
+  const [city, setCity] = React.useState('');
+  const [state, setState] = React.useState('');
+  const [zip, setZip] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+
+  console.log(process.env.NEXT_PUBLIC_BACKEND_API_URL)
+
+  const handleSearch = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${baseUrl}/WeatherForecast?Street=${encodeURIComponent(street)}&City=${encodeURIComponent(city)}&State=${encodeURIComponent(state)}&Zip=${encodeURIComponent(zip)}`);
+      if (response.status !== 200) {
+        setForecasts([]);
+      }
+      else {
+        const data: WeatherForecastData = await response.json();
+        setForecasts(data.forecast);
+      }
+    }
+    catch (error) {
+      setForecasts([]);
+    }
+    finally {
+      setLoading(false);
+    }
+  };
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <Stack spacing={2} direction="row">
-          <Button variant="text">Text</Button>
-          <Button variant="contained">Contained</Button>
-          <Button variant="outlined">Outlined</Button>
-        </Stack>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <Container maxWidth="lg">
+      {loading ? (
+        <>
+          <Grid item xs={12} md={12} lg={12}>
+            <LinearProgress />
+            <Skeleton />
+            <Skeleton animation="wave" />
+            <Skeleton animation={false} />
+          </Grid>
+        </>
+      ) : (
+        <>
+          <Box
+            sx={{
+              my: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
           >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+            <Grid container spacing={2} alignItems="center" justifyContent="center">
+              <Grid item><TextField label="Street" value={street} onChange={(e) => setStreet(e.target.value)} /></Grid>
+              <Grid item><TextField label="City" value={city} onChange={(e) => setCity(e.target.value)} /></Grid>
+              <Grid item><TextField label="State" value={state} onChange={(e) => setState(e.target.value)} /></Grid>
+              <Grid item><TextField label="Zip" value={zip} onChange={(e) => setZip(e.target.value)} /></Grid>
+              <Grid item><Button variant="contained" onClick={handleSearch}>Search</Button></Grid>
+            </Grid>
+            <Grid container spacing={2} style={{ marginTop: 20 }}>
+              {forecasts.map((forecast) => (
+                <Grid item xs={12} sm={6} md={4} key={forecast.number}>
+                  <Card sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Typography variant="h5" component="div">
+                        {forecast.name}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {forecast.startTime} - {forecast.endTime}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {forecast.temperature} {forecast.temperatureUnit}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {forecast.detailedForecast}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        </>
+      )}
+    </Container>
   );
 }
