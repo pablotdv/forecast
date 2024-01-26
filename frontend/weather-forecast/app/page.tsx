@@ -3,6 +3,7 @@ import React from 'react';
 import { Card, CardContent, Typography, TextField, Button, Grid, LinearProgress, Skeleton } from '@mui/material';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
+import { Alert } from '@mui/material';
 
 
 // types.ts
@@ -33,25 +34,29 @@ export default function Home() {
   const [state, setState] = React.useState('');
   const [zip, setZip] = React.useState('');
   const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState('');
 
   console.log(process.env.NEXT_PUBLIC_BACKEND_API_URL)
 
   const handleSearch = async () => {
     try {
       setLoading(true);
+      setError('');
       const response = await fetch(`${baseUrl}/WeatherForecast?Street=${encodeURIComponent(street)}&City=${encodeURIComponent(city)}&State=${encodeURIComponent(state)}&Zip=${encodeURIComponent(zip)}`);
-      if (response.status !== 200) {
+      if (response.status === 404) {
+        setError('No data found for the specified location.');
         setForecasts([]);
-      }
-      else {
+      } else if (response.status !== 200) {
+        setError('An error occurred while fetching the data.');
+        setForecasts([]);
+      } else {
         const data: WeatherForecastData = await response.json();
         setForecasts(data.forecast);
       }
-    }
-    catch (error) {
+    } catch (error) {
+      setError('An unexpected error occurred.');
       setForecasts([]);
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -68,6 +73,7 @@ export default function Home() {
         </>
       ) : (
         <>
+          {error && <Alert severity="error">{error}</Alert>}
           <Box
             sx={{
               my: 4,
