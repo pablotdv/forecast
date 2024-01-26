@@ -38,8 +38,8 @@ docker-compose up -d
 
 ## improvements
 
-[] handling errors on integrations with external services
+[X] handling errors on integrations with external services
 
-[] add unit tests
+[X] add unit tests
 
-[] add integration tests
+[X] add integration tests
