@@ -1,4 +1,5 @@
 ﻿using ForecastApi.ExternalServices.Geocodings;
+using ForecastApi.ExternalServices.Geocodings.Models;
 using ForecastApi.ExternalServices.Weathers;
 using MediatR;
 
@@ -6,10 +7,10 @@ namespace ForecastApi.Application;
 
 public class WeatherForecastCommandHandler : IRequestHandler<WeatherForecastCommand, WeatherForecastCommandResult>
 {
-    private readonly GeocodingServices _geocodingServices;
-    private readonly ForecastServices _forecastServices;
-    private readonly PointServices _pointServices;
-    public WeatherForecastCommandHandler(GeocodingServices geocodingServices, ForecastServices forecastServices, PointServices pointServices)
+    private readonly IGeocodingServices _geocodingServices;
+    private readonly IForecastServices _forecastServices;
+    private readonly IPointServices _pointServices;
+    public WeatherForecastCommandHandler(IGeocodingServices geocodingServices, IForecastServices forecastServices, IPointServices pointServices)
     {
         _geocodingServices = geocodingServices;
         _forecastServices = forecastServices;
@@ -26,6 +27,9 @@ public class WeatherForecastCommandHandler : IRequestHandler<WeatherForecastComm
             Zip = request.Zip
         });
 
+        if (geocodingResponse?.Result?.AddressMatches?.Count == 0)
+            return null;
+
         var pointResponse = await _pointServices.GetPointAsync(new PointRequest
         {
             Latitude = geocodingResponse.Result.AddressMatches.FirstOrDefault().Coordinates.Y,
@@ -39,10 +43,13 @@ public class WeatherForecastCommandHandler : IRequestHandler<WeatherForecastComm
             GridY = pointResponse.Properties.GridY
         });
 
+        if (forecastResponse?.Properties?.Periods?.Count == 0)
+            return null;
+
         return new WeatherForecastCommandResult
         {
             Forecast = forecastResponse.Properties.Periods.Select(
-                period => new ForecastApi.Application.Forecast {
+                period => new ForecastApi.Application.Models.Forecast {
                     Number = period.Number,
                     Name = period.Name,
                     StartTime = period.StartTime,
@@ -51,15 +58,15 @@ public class WeatherForecastCommandHandler : IRequestHandler<WeatherForecastComm
                     Temperature = period.Temperature,
                     TemperatureUnit = period.TemperatureUnit,
                     TemperatureTrend = period.TemperatureTrend,
-                    ProbabilityOfPrecipitation = new ProbabilityOfPrecipitation {
+                    ProbabilityOfPrecipitation = new Models.ProbabilityOfPrecipitation {
                         UnitCode = period.ProbabilityOfPrecipitation.UnitCode,
                         Value = period.ProbabilityOfPrecipitation.Value
                     },
-                    Dewpoint = new Dewpoint {
+                    Dewpoint = new Models.Dewpoint {
                         UnitCode = period.Dewpoint.UnitCode,
                         Value = period.Dewpoint.Value
                     },
-                    RelativeHumidity = new RelativeHumidity {
+                    RelativeHumidity = new Models.RelativeHumidity {
                         UnitCode = period.RelativeHumidity.UnitCode,
                         Value = period.RelativeHumidity.Value
                     },

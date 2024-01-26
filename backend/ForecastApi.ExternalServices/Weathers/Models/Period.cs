@@ -1,8 +1,9 @@
 using System.Text.Json.Serialization;
 
-namespace ForecastApi.Application;
 
-public class Forecast
+namespace ForecastApi.ExternalServices.Weathers.Models;
+
+public class Period
 {
     [JsonPropertyName("number")]
     public int Number { get; set; }

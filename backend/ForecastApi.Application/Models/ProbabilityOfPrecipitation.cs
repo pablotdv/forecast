@@ -1,13 +1,13 @@
 using System.Text.Json.Serialization;
 
-namespace ForecastApi.Application;
+namespace ForecastApi.Application.Models;
 
-public class RelativeHumidity
+public class ProbabilityOfPrecipitation
 {
     [JsonPropertyName("unitCode")]
     public string UnitCode { get; set; }
 
     [JsonPropertyName("value")]
-    public int Value { get; set; }
+    public double? Value { get; set; }
 }
 

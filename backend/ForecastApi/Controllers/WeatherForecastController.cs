@@ -20,6 +20,8 @@ public class WeatherForecastController : ControllerBase
     public async Task<IActionResult> Get([FromQuery] WeatherForecastCommand command)
     {
         var result = await _mediator.Send(command);
+        if (result == null)
+            return NotFound();
         return Ok(result);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using ForecastApi.ExternalServices;
 using ForecastApi.ExternalServices.Weathers;
+using ForecastApi.ExternalServices.Weathers.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ForecastApi;
@@ -8,9 +9,9 @@ namespace ForecastApi;
 [Route("[controller]")]
 public class PointController : ControllerBase
 {
-    private readonly PointServices _pointServices;
+    private readonly IPointServices _pointServices;
 
-    public PointController(PointServices pointServices)
+    public PointController(IPointServices pointServices)
     {
         _pointServices = pointServices;
     }

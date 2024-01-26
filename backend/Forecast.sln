@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForecastApi.ExternalService
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForecastApi.Application", "ForecastApi.Application\ForecastApi.Application.csproj", "{A9FEC67A-A3AC-429A-AD34-C63043D5C3A2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForecastApi.Test", "ForecastApi.Test\ForecastApi.Test.csproj", "{30366328-12DF-4BA6-B180-9FE0E2CAA794}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{A9FEC67A-A3AC-429A-AD34-C63043D5C3A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9FEC67A-A3AC-429A-AD34-C63043D5C3A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9FEC67A-A3AC-429A-AD34-C63043D5C3A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30366328-12DF-4BA6-B180-9FE0E2CAA794}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30366328-12DF-4BA6-B180-9FE0E2CAA794}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30366328-12DF-4BA6-B180-9FE0E2CAA794}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30366328-12DF-4BA6-B180-9FE0E2CAA794}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,6 +1,7 @@
 using ForecastApi.Application;
 using ForecastApi.ExternalServices;
 using ForecastApi.ExternalServices.Geocodings;
+using ForecastApi.ExternalServices.Geocodings.Models;
 using ForecastApi.ExternalServices.Weathers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,10 +20,10 @@ builder.Services.AddHttpClient("WeatherService", client =>
     client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("Weather:BaseAddress"));
     client.DefaultRequestHeaders.Add("User-Agent", "(https://pablotdv.azurewebsites.net,pablotdvsm@gmail.com)");
 });
-builder.Services.AddTransient<PointServices>();
-builder.Services.AddTransient<ForecastServices>();
+builder.Services.AddTransient<IPointServices>();
+builder.Services.AddTransient<IForecastServices>();
 
-builder.Services.AddHttpClient<GeocodingServices>(
+builder.Services.AddHttpClient<IGeocodingServices>(
     client =>
     {
         client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("Geocoding:BaseAddress"));                

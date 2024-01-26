@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace ForecastApi.Application;
+namespace ForecastApi.Application.Models;
 
 public class Dewpoint
 {
