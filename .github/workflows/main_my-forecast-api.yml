@@ -57,5 +57,5 @@ jobs:
         with:
           app-name: 'my-forecast-api'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_AF1EA4CCB13F4E28B903B1357F5AA21A }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8669A56F237C4A3184E6C89E99EE8E38 }}
           package: .
