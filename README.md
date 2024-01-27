@@ -36,6 +36,26 @@ docker-compose up -d
 | 242 W Hudson St | Long Beach | New York (NY) | 95014 |
 | 6185 Ward Rd | Sanborn | New York (NY) | 14132 |
 
+## backend
+
+- .NET Core 8
+- C#
+- xUnit
+- Moq
+- Swagger
+- MetiatR 
+
+## frontend
+
+- Next.js
+- React
+- Material UI
+
+## public access
+
+https://forecast-flax.vercel.app/
+https://my-forecast-api2.azurewebsites.net/swagger/index.html
+
 ## improvements
 
 [X] handling errors on integrations with external services
@@ -43,3 +63,5 @@ docker-compose up -d
 [X] add unit tests
 
 [X] add integration tests
+
+[X] CI/CD
