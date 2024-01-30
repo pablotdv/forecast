@@ -54,6 +54,7 @@ docker-compose up -d
 ## public access
 
 https://forecast-flax.vercel.app/
+
 https://my-forecast-api2.azurewebsites.net/swagger/index.html
 
 ## improvements
